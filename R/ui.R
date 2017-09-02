@@ -2,7 +2,7 @@ bootstrapPage(
 
   selectInput(inputId = "n_breaks",
               label = "Number of bins in histogram (approximate):",
-              choices = c(10, 20, 35, 50),
+              choices = c(10, 20, 35, 50, 100, 200),
               selected = 20),
 
   checkboxInput(inputId = "individual_obs",
