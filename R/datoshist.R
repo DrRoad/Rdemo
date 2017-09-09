@@ -4,44 +4,44 @@ datos <- c() #inicializacion del vector de datos
 
 # Define UI for app that draws a histogram ----
 ui <- fluidPage(
-  
+
   # App title ----
   titlePanel("Distribucion de Datos"),
-  
+
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
-    
+
     # Sidebar panel for inputs ----
     sidebarPanel(
-      
+
       # Input: Slider for the number of bins ----
       sliderInput(inputId = "bins",
                   label = "Number of bins:",
                   min = 1,
                   max = 50,
                   value = 30)
-      
+
     ),
-    
+
     # Main panel for displaying outputs ----
     mainPanel(
-      
+
       # Output: Histogram ----
       plotOutput(outputId = "distPlot"),
-      
+
       # Output: Verbatim text for data summary ----
       verbatimTextOutput("summary"),
-      
+
       # Output: HTML table with requested number of observations ----
       tableOutput("view")
-      
+
     )
   )
 )
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-  
+
   # Histogram of the Old Faithful Geyser Data ----
   # with requested number of bins
   # This expression that generates a histogram is wrapped in a call
@@ -51,20 +51,22 @@ server <- function(input, output) {
   #    re-executed when inputs (input$bins) change
   # 2. Its output type is a plot
   output$distPlot <- renderPlot({
-    
+
     #x    <- faithful$waiting
     bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
-    
+
     hist(datos, breaks = bins, col = "#75AADB", border = "white",
          xlab = "x",
-         main = "f(x)")
-    
+         main = "f(x)",
+         probability = TRUE)
+    lines(density(x),col='red')
+
   })
-  
+
   output$summary <- renderPrint({
     summary(datos)
   })
-  
+
 }
 
 datoshist <- function(x){
