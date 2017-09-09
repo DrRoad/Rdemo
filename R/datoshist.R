@@ -32,6 +32,8 @@ ui <- fluidPage(
       # Output: Verbatim text for data summary ----
       verbatimTextOutput("summary"),
 
+      verbatimTextOutput("sd"),
+
       # Output: HTML table with requested number of observations ----
       tableOutput("view")
 
@@ -65,6 +67,10 @@ server <- function(input, output) {
 
   output$summary <- renderPrint({
     summary(datos)
+  })
+
+  output$sd <- renderPrint({
+    cat("Desv Est", sd(x))
   })
 
 }
