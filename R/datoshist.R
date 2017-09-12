@@ -60,7 +60,7 @@ server <- function(input, output) {
          xlab = "x",
          main = "f(x)",
          probability = TRUE)
-    lines(density(x),col='red')
+    lines(density(datos),col='red')
 
   })
 
