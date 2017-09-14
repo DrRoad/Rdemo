@@ -1,4 +1,5 @@
 library(shiny)
+library(e1071)
 source('medidas.R')
 
 datos <- c() #inicializacion del vector de datos
@@ -27,14 +28,13 @@ ui <- fluidPage(
     # Main panel for displaying outputs ----
     mainPanel(
 
-      # Output: Histogram ----
-      plotOutput(outputId = "distPlot"),
-
-      # Output: Verbatim text for data summary ----
-      verbatimTextOutput("summary"),
-
-      # Output: HTML table with requested number of observations ----
-      tableOutput("view")
+      # Output: Tabset w/ plot, summary, and table ----
+      tabsetPanel(type = "tabs",
+                  tabPanel("Histogram", plotOutput("distPlot")),
+                  tabPanel("Density", plotOutput("density")),
+                  tabPanel("ECDF", plotOutput("ecdf")),
+                  tabPanel("Summary", verbatimTextOutput("summary"))
+                  )
 
     )
   )
@@ -43,17 +43,17 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
 
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot <- renderPlot({
+    output$distPlot <- renderPlot({
 
-    #x    <- faithful$waiting
+    bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
+
+    hist(datos, breaks = bins, col = "#75AADB", border = "white",
+         xlab = "x",
+         main = "f(x)")
+  })
+
+  output$density <- renderPlot({
+
     bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
 
     hist(datos, breaks = bins, col = "#75AADB", border = "white",
@@ -61,6 +61,12 @@ server <- function(input, output) {
          main = "f(x)",
          probability = TRUE)
     lines(density(datos),col='red')
+
+  })
+
+  output$ecdf <- renderPlot({
+
+    plot(ecdf(datos),col='magenta')
 
   })
 
