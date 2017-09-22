@@ -75,10 +75,10 @@ server <- function(input, output) {
                  stringsAsFactors = input$stringAsFactors)
     })
 
-  #D <- dataseries::ds("TOU.OVR.D")
-  #x <- D$TOU.OVR.D
-  #fechas <- D$time
-  #datos <- x
+  D <- dataseries::ds("TOU.OVR.D")
+  x <- D$TOU.OVR.D
+  fechas <- D$time
+  datos <- x
 
   #Histograma
   output$distPlot <- renderPlot({
