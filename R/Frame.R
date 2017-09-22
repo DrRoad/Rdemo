@@ -28,9 +28,9 @@ ui <- fluidPage(
 
                  sliderInput(inputId = "rangets",
                              label = "Time Range",
-                             min =fechas[1],
-                             max =fechas[length(fechas)],
-                             value = c(fechas[20],fechas[40])),
+                             min =1,
+                             max =50,
+                             value = c(20,30)),
 
                  # Input: Slider for the number of bins ----
                  sliderInput(inputId = "bins",
