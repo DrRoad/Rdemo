@@ -7,7 +7,18 @@ source('R/medidas.R')
 ui <- fluidPage(
   titlePanel("Ajuste para Series de Tiempo"),
   navbarPage("",
-             tabPanel("Datos"
+             tabPanel("Datos",
+                      sidebarPanel(
+                        fileInput('file','Carga del archivo'),
+                        helpText("Default max. file size is 5MB"),
+                        tags$hr(),
+                        h5(helpText("Select the read.table parameters below")),
+                        checkboxInput(inputId = 'header', label = 'Header', value = FALSE),
+                        checkboxInput(inputId = "stringAsFactors", "stringAsFactors", FALSE),
+                        br(),
+                        radioButtons(inputId = 'sep', label = 'Separator', choices = c(Comma=',',Semicolon=';',Tab='\t', Space=''), selected = ',')
+
+                      )
              ),
              tabPanel("Exploracion",sidebarLayout(
 
@@ -55,10 +66,19 @@ ui <- fluidPage(
 server <- function(input, output) {
   #datos <- rnorm(1000)
 
-  D <- dataseries::ds("TOU.OVR.D")
-  x <- D$TOU.OVR.D
-  fechas = D$time
-  datos <- x
+  data <- reactive({
+    file1 <- input$file
+    if(is.null(file)){return()}
+      read.table(file=file1$datapath,
+                 sep=input$sep,
+                 header = input$header,
+                 stringsAsFactors = input$stringAsFactors)
+    })
+
+  #D <- dataseries::ds("TOU.OVR.D")
+  #x <- D$TOU.OVR.D
+  #fechas <- D$time
+  #datos <- x
 
   #Histograma
   output$distPlot <- renderPlot({
