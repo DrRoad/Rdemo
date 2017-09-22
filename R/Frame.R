@@ -18,7 +18,8 @@ ui <- fluidPage(
                         br(),
                         radioButtons(inputId = 'sep', label = 'Separator', choices = c(Comma=',',Semicolon=';',Tab='\t', Space=''), selected = ',')
 
-                      )
+                      ),
+                      mainPanel(tableOutput("contents"))
              ),
              tabPanel("Exploracion",sidebarLayout(
 
@@ -66,14 +67,17 @@ ui <- fluidPage(
 server <- function(input, output) {
   #datos <- rnorm(1000)
 
-  data <- reactive({
-    file1 <- input$file
-    if(is.null(file)){return()}
-      read.table(file=file1$datapath,
-                 sep=input$sep,
-                 header = input$header,
-                 stringsAsFactors = input$stringAsFactors)
-    })
+  output$contents <- renderTable({
+
+    req(input$file)
+    df <- read.csv(input$file$datapath,
+                   header = input$header,
+                   sep = input$sep,
+                   quote = input$quote)
+      return(head(df))
+
+  })
+
 
   D <- dataseries::ds("TOU.OVR.D")
   x <- D$TOU.OVR.D
