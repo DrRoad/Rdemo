@@ -65,7 +65,12 @@ ui <- fluidPage(
 )
 )
 server <- function(input, output) {
-  #datos <- rnorm(1000)
+  df <- c()
+
+  D <- dataseries::ds("TOU.OVR.D")
+  x <- D$TOU.OVR.D
+  fechas <- D$time
+  datos <- x
 
   output$contents <- renderTable({
 
@@ -78,18 +83,16 @@ server <- function(input, output) {
 
   })
 
-
-  D <- dataseries::ds("TOU.OVR.D")
-  x <- D$TOU.OVR.D
-  fechas <- D$time
-  datos <- x
-
   #Histograma
   output$distPlot <- renderPlot({
 
-    bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
+    req(input$file)
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    vdatos <- df[,ncol(df)]
 
-    hist(datos, breaks = bins, col = "#75AADB", border = "white",
+    bins <- seq(min(vdatos), max(vdatos), length.out = input$bins + 1)
+
+    hist(vdatos, breaks = bins, col = "#75AADB", border = "white",
          xlab = "x",
          main = "f(x)")
   })
