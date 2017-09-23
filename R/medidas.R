@@ -13,3 +13,5 @@ medidas <- function(x){
 
   return(M)
 }
+
+#por aqui paso maria
