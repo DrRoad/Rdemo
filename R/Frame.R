@@ -115,8 +115,12 @@ server <- function(input, output) {
     #x <- x[n1:n2]
     #fechas <- fechas[n1:n2]
 
+    req(input$file)
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    vdatos <- df[,ncol(df)]
+    vfechas <- df[,ncol(df)-1]
 
-    plot(fechas,x,type='l',col='blue')}
+    plot(seq(1:length(vdatos)),vdatos,type='l',col='blue')}
 
   )
 
