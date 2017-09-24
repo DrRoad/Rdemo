@@ -26,12 +26,6 @@ ui <- fluidPage(
                # Sidebar panel for inputs ----
                sidebarPanel(
 
-                 sliderInput(inputId = "rangets",
-                             label = "Time Range",
-                             min =1,
-                             max =50,
-                             value = c(20,30)),
-
                  # Input: Slider for the number of bins ----
                  sliderInput(inputId = "bins",
                              label = "Number of bins:",
@@ -67,11 +61,6 @@ ui <- fluidPage(
 server <- function(input, output) {
   df <- c()
 
-  D <- dataseries::ds("TOU.OVR.D")
-  x <- D$TOU.OVR.D
-  fechas <- D$time
-  datos <- x
-
   output$contents <- renderTable({
 
     req(input$file)
@@ -88,16 +77,20 @@ server <- function(input, output) {
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-    vdatos <- df[,ncol(df)]
+    datos <- df[,ncol(df)]
 
-    bins <- seq(min(vdatos), max(vdatos), length.out = input$bins + 1)
+    bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
 
-    hist(vdatos, breaks = bins, col = "#75AADB", border = "white",
+    hist(datos, breaks = bins, col = "#75AADB", border = "white",
          xlab = "x",
          main = "f(x)")
   })
   #Densidad
   output$density <- renderPlot({
+
+    req(input$file)
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
 
     bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
 
@@ -109,23 +102,22 @@ server <- function(input, output) {
 
   #Time Series Plot
   output$tseries <- renderPlot({
-    #n1 <- min(rangets)
-    #n2 <- max(rangets)
-
-    #x <- x[n1:n2]
-    #fechas <- fechas[n1:n2]
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-    vdatos <- df[,ncol(df)]
+    datos <- df[,ncol(df)]
     vfechas <- df[,ncol(df)-1]
 
-    plot(seq(1:length(vdatos)),vdatos,type='l',col='blue')}
-
+    plot(seq(1:length(datos)),panel.first = grid(),datos,type='l',col='blue',xlab='Seq Time',ylab='Data')}
+    #plot(vfechas,x, xaxt="n", panel.first = grid(),type='l',ylab='produccion.mes.')}
   )
 
   #ECDF
   output$ecdf <- renderPlot({
+
+    req(input$file)
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
 
     plot(ecdf(datos),col='magenta')
 
@@ -133,7 +125,12 @@ server <- function(input, output) {
 
   #Summary
   output$summary <- renderPrint({
-    medidas(datos)
+
+    req(input$file)
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+
+    data.frame(medidas(datos))
   })
 
 }
