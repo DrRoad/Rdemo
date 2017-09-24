@@ -6,23 +6,21 @@ library(ggplot2)
 source('R/medidas.R')
 
 ui <- fluidPage(
-  titlePanel("Ajuste para Series de Tiempo"),
+  titlePanel("Time Series Estimation"),
   navbarPage("",
-             tabPanel("Datos",
+             tabPanel("Data",
                       sidebarPanel(
-                        fileInput('file','Carga del archivo'),
-                        helpText("Default max. file size is 5MB"),
+                        fileInput('file','File Load'),
                         tags$hr(),
                         h5(helpText("Select the read.table parameters below")),
-                        checkboxInput(inputId = 'header', label = 'Header', value = FALSE),
-                        checkboxInput(inputId = "stringAsFactors", "stringAsFactors", FALSE),
+                        checkboxInput(inputId = 'header', label = 'Header', value = TRUE),
                         br(),
                         radioButtons(inputId = 'sep', label = 'Separator', choices = c(Comma=',',Semicolon=';',Tab='\t', Space=''), selected = ',')
 
                       ),
                       mainPanel(tableOutput("contents"))
              ),
-             tabPanel("Exploracion",sidebarLayout(
+             tabPanel("Exploration",sidebarLayout(
 
                # Sidebar panel for inputs ----
                sidebarPanel(
@@ -50,9 +48,28 @@ ui <- fluidPage(
                )
              )
              ),
-             tabPanel("Modelo de Regresión"
+             tabPanel("Regression Model",
+                      sidebarPanel(
+                        h5(helpText("Select the estimation parameters below")),
+                        numericInput('frequency',"Frecuencia",12),
+                        numericInput('year','Initial Year',2005),
+                        numericInput('init','Initial Period',1),
+                        numericInput('fore.period','Forecast Period',12)
+                      ),
+                      mainPanel(
+                        tabsetPanel(type='tabs',
+                        tabPanel('Linear',plotOutput('linear')),
+                        tabPanel('Cuadratic'),
+                        tabPanel('Cubic'),
+                        tabPanel('Linear&season'),
+                        tabPanel('Cuadratic&season'),
+                        tabPanel('Cubic&season')
+
+
+                      ))
+
              ),
-             tabPanel("Análisis de Residuales"
+             tabPanel("Residuals Analysis"
              )
 
 
@@ -148,7 +165,7 @@ server <- function(input, output) {
     #plot(ecdf(datos),col='magenta')
 
     ggplot(df, aes(df[,ncol(df)]))+
-      stat_ecdf(geom='point',color='deeppink3')+
+      stat_ecdf(geom='point',color='blue4')+
       labs(x='Datos')
 
   })
@@ -162,6 +179,27 @@ server <- function(input, output) {
 
     data.frame(medidas(datos))
   })
+
+  output$linear <- renderPlot({
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency)
+    ti <- seq(1:length(yi))
+
+    linear.model <- lm(yi ~ ti)
+    linear.fit <- linear.model$fitted.values
+
+    plot(ti,yi,type='l')
+    lines(linear.fit,col='red')
+
+  }
+  )
 
 }
 
