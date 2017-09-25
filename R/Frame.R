@@ -3,9 +3,10 @@ library(e1071)
 library(dataseries)
 library(forecast)
 library(ggplot2)
+library(shinythemes)
 source('R/medidas.R')
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Ajuste para Series de Tiempo"),
   navbarPage("",
              tabPanel("Datos",
