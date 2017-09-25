@@ -152,9 +152,11 @@ server <- function(input, output) {
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
-    fechas <- df[,ncol(df)-1]
+    fechas <- as.Date(df[,ncol(df)-1])
 
-    ggplot(df, aes(seq(1:length(datos)), datos)) + geom_line(color='blue4') +
+    obser <- data.frame(fechas,datos)
+
+    ggplot(obser, aes(fechas, datos)) + geom_line(aes(fechas,datos),color='blue4') +
       xlab("Seq Time") + ylab("Data")
 
 
