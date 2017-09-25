@@ -51,12 +51,15 @@ ui <- fluidPage(
              tabPanel("Regression Model",
                       sidebarPanel(
                         h5(helpText("Select the estimation parameters below")),
-                        numericInput('frequency',"Frecuencia",12),
+                        numericInput('frequency',"Frequency",12),
                         numericInput('year','Initial Year',2005),
                         numericInput('init','Initial Period',1),
                         numericInput('fore.period','Forecast Period',12)
                       ),
                       mainPanel(
+                        tags$head(
+                          tags$style(type='text/css',
+                                     ".nav-tabs {font-size: 10px} ")),
                         tabsetPanel(type='tabs',
                         tabPanel('Linear',plotOutput('linear')),
                         tabPanel('Cuadratic'),
@@ -181,8 +184,10 @@ server <- function(input, output) {
   })
 
   output$linear <- renderPlot({
+
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
+
     y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
 
     m <- input$fore.period
@@ -195,8 +200,12 @@ server <- function(input, output) {
     linear.model <- lm(yi ~ ti)
     linear.fit <- linear.model$fitted.values
 
-    plot(ti,yi,type='l')
-    lines(linear.fit,col='red')
+    #plot(ti,yi,type='l')
+    #lines(linear.fit,col='red')
+
+    ggplot(data.frame(ti,yi,linear.fit),aes(ti,yi))+
+      geom_line(aes(ti,yi),col='blue')+
+      geom_line(aes(ti,linear.fit),col='red')
 
   }
   )
