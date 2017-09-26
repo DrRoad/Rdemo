@@ -1,24 +1,58 @@
+radioButtons('modelo', 'Seleccione el modelo de ajuste:',
+             c(Lineal='1', Cuadratico='2', Cubico='3'))
+
+
+## Salidas Analisis de Residuales
 output$resplot <- renderPlot({
 
   req(input$file)
   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
   datos <- df[,ncol(df)]
 
+
+  #Modelos de Ajuste
+  #Ajuste mod1
+
+  t = seq(1:(T-m))
+  mod1 = lm(yi~t)
+  summary(mod1)
+
+  ##Mod2: tendencia cuadrática
+
+  #Ajuste mod2
+
+  t2 = t^2
+  mod2 = lm(yi~t2)
+  summary(mod2)
+
+  ##Mod3: tendencia cúbica
+
+  #Ajuste mod3
+
+  t3 = t^3
+  mod3 = lm(yi~t3)
+  summary(mod3)
+
+
+  #Graficación Modelos de Ajuste
+
+  par(mfrow=c(2,2))
+
 if(model == 3){
-  par(mfrow=c(2,2)) #Divido el area del grafico en 2 filas y 2 columnas
+  #par(mfrow=c(2,2)) #Divido el area del grafico en 2 filas y 2 columnas
   options(repr.plot.width=10, repr.plot.height=6) #Ajusto el ancho del grafico
-  r3=m3$residuals
+  r3=mod3$residuals
   plot(t,r3, type='l', ylab='',main="Residuales Modelo Cubico",col="red") #residuales para modelo cubico
   abline(h=0,lty=2)
   plot(density(r3),xlab='x', main="Densidad Residuales Modelo Cubico",col="red") #densidad para modelo cubico
-  qqnorm(r3)               # Grafica qqnorm para probar normalidad
+  qqnorm(r3)               # Grafica para realizar prueba de normalidad
   qqline(r3,col=2)
-  acf(r3, ci.type="ma",60) # Prueba ACF
+  acf(r3, ci.type="ma",60) # Prueba ACF (autocorrelación)
 
 } else if(model == 2){
-  par(mfrow=c(2,2))
+  #par(mfrow=c(2,2))
   options(repr.plot.width=10, repr.plot.height=6)
-  r2=m2$residuals
+  r2=mod2$residuals
   plot(t,r2, type='l', ylab='',main="Residuales Modelo Cuadratico",col="red")
   abline(h=0,lty=2)
   plot(density(r2),xlab='x', main="Densidad Residuales Modelo Cuadratico",col="red")
@@ -27,9 +61,9 @@ if(model == 3){
   acf(r2, ci.type="ma",60) # Prueba ACF
 
 } else {
-  par(mfrow=c(2,2))
+  #par(mfrow=c(2,2))
   options(repr.plot.width=10, repr.plot.height=6)
-  r1=m1$residuals
+  r1=mod1$residuals
   plot(t,r1, type='l', ylab='',main="Residuales Modelo Lineal",col="red")
   abline(h=0,lty=2)
   plot(density(r1),xlab='x', main="Densidad Residuales Modelo Lineal",col="red")
