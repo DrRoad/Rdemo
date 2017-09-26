@@ -3,7 +3,7 @@ library(e1071)
 library(dataseries)
 library(forecast)
 library(ggplot2)
-library(shinythemes)
+#library(shinythemes)
 source('R/medidas.R')
 
 #<<<<<<< HEAD
