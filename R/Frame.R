@@ -8,11 +8,11 @@ source('R/medidas.R')
 
 #<<<<<<< HEAD
 #ui <- fluidPage(theme = shinytheme("flatly"),
-  #titlePanel("Ajuste para Series de Tiempo"),
+#titlePanel("Ajuste para Series de Tiempo"),
 #=======
 ui <- fluidPage(
   titlePanel("Time Series Estimation"),
-#>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
+  #>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
   navbarPage("",
              tabPanel("Data",
                       sidebarPanel(
@@ -67,21 +67,18 @@ ui <- fluidPage(
                           tags$style(type='text/css',
                                      ".nav-tabs {font-size: 10px} ")),
                         tabsetPanel(type='tabs',
-                        tabPanel('Linear',plotOutput('linear')),
-                        tabPanel('Cuadratic',plotOutput('cuadratic')),
-                        tabPanel('Cubic',plotOutput('cubic')),
-                        tabPanel('Linear&season',plotOutput('linearseason')),
-                        tabPanel('Cuadratic&season',plotOutput('cuadseason')),
-                        tabPanel('Cubic&season',plotOutput('cubseason'))
+                                    tabPanel('Linear',plotOutput('linear')),
+                                    tabPanel('Cuadratic',plotOutput('cuadratic')),
+                                    tabPanel('Cubic',plotOutput('cubic')),
+                                    tabPanel('Linear&season',plotOutput('linearseason')),
+                                    tabPanel('Cuadratic&season',plotOutput('cuadseason')),
+                                    tabPanel('Cubic&season',plotOutput('cubseason'))
 
 
-                      ))
+                        ))
 
              ),
-             tabPanel("Residuals Analysis",
-                      radioButtons('modelo', 'Seleccione el modelo de ajuste:',
-                                   c(Lineal='1', Cuadratico='2', Cubico='3')),
-                      plotOutput("resplot")
+             tabPanel("Residuals Analysis"
              )
 
 
@@ -167,7 +164,7 @@ server <- function(input, output) {
     #plot(vfechas,x, xaxt="n", panel.first = grid(),type='l',ylab='produccion.mes.')}
 
   }
-    )
+  )
 
   #ECDF
   output$ecdf <- renderPlot({
