@@ -78,7 +78,10 @@ ui <- fluidPage(
                       ))
 
              ),
-             tabPanel("Residuals Analysis"
+             tabPanel("Residuals Analysis",
+                      radioButtons('modelo', 'Seleccione el modelo de ajuste:',
+                                   c(Lineal='1', Cuadratico='2', Cubico='3')),
+                      plotOutput("resplot")
              )
 
 

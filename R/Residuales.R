@@ -1,3 +1,8 @@
+radioButtons('modelo', 'Seleccione el modelo de ajuste:',
+             c(Lineal='1', Cuadratico='2', Cubico='3', HoltWinters = '4'))
+
+
+
 output$resplot <- renderPlot({
 
   req(input$file)
