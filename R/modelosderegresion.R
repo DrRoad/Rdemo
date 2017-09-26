@@ -29,7 +29,7 @@ plot.ts(y,
         lwd=2,
         col='navy',
         xlab='Fechas',
-        ylab='Valores Observados' )
+        ylab='Valores observados' )
 
 #Gráfica stl opcional
 
