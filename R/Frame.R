@@ -68,11 +68,11 @@ ui <- fluidPage(
                                      ".nav-tabs {font-size: 10px} ")),
                         tabsetPanel(type='tabs',
                         tabPanel('Linear',plotOutput('linear')),
-                        tabPanel('Cuadratic'),
-                        tabPanel('Cubic'),
-                        tabPanel('Linear&season'),
-                        tabPanel('Cuadratic&season'),
-                        tabPanel('Cubic&season')
+                        tabPanel('Cuadratic',plotOutput('cuadratic')),
+                        tabPanel('Cubic',plotOutput('cubic')),
+                        tabPanel('Linear&season',plotOutput('linearseason')),
+                        tabPanel('Cuadratic&season',plotOutput('cuadseason')),
+                        tabPanel('Cubic&season',plotOutput('cubseason'))
 
 
                       ))
@@ -191,10 +191,13 @@ server <- function(input, output) {
     data.frame(medidas(datos))
   })
 
+
+  #Modelo de Regresion - Lineal
   output$linear <- renderPlot({
 
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
 
     y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
 
@@ -203,17 +206,195 @@ server <- function(input, output) {
     frequency <- input$frequency
 
     yi <- ts(y[1:(n-m)],frequency)
+    fechas.model <- fechas[1:(n-m)]
     ti <- seq(1:length(yi))
 
-    linear.model <- lm(yi ~ ti)
-    linear.fit <- linear.model$fitted.values
+    model <- lm(yi ~ ti)
+    y.fit <- model$fitted.values
 
     #plot(ti,yi,type='l')
-    #lines(linear.fit,col='red')
+    #lines(y.fit,col='red')
 
-    ggplot(data.frame(ti,yi,linear.fit),aes(ti,yi))+
-      geom_line(aes(ti,yi),col='blue')+
-      geom_line(aes(ti,linear.fit),col='red')
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
+
+  }
+  )
+
+  #Modelo de Regresion - Cuadratic
+  output$cuadratic <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency)
+    fechas.model <- fechas[1:(n-m)]
+    ti <- seq(1:length(yi))
+    ti2 <- ti*ti
+
+    model <- lm(yi ~ ti + ti2)
+    y.fit <- model$fitted.values
+
+    #plot(ti,yi,type='l')
+    #lines(y.fit,col='red')
+
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
+
+  }
+  )
+
+  #Modelo de Regresion - Cubica
+  output$cubic <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency)
+    fechas.model <- fechas[1:(n-m)]
+    ti <- seq(1:length(yi))
+    ti2 <- ti*ti
+    ti3 <- ti*ti*ti
+
+    model <- lm(yi ~ ti + ti2 + ti3)
+    y.fit <- model$fitted.values
+
+    #plot(ti,yi,type='l')
+    #lines(y.fit,col='red')
+
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
+
+  }
+  )
+
+  #Modelo de Regresion - Linealseason
+  output$linearseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency=frequency)
+    fechas.model <- fechas[1:(n-m)]
+    ti <- seq(1:length(yi))
+    It <- seasonaldummy(yi)
+
+    model <- lm(yi ~ ti+It)
+    y.fit <- model$fitted.values
+
+    #plot(ti,yi,type='l')
+    #lines(y.fit,col='red')
+
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
+
+  }
+  )
+
+  #Modelo de Regresion - cuadseason
+  output$cuadseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency=frequency)
+    fechas.model <- fechas[1:(n-m)]
+    ti <- seq(1:length(yi))
+    ti2 <- ti*ti
+    It <- seasonaldummy(yi)
+
+    model <- lm(yi ~ ti+ti2+It)
+    y.fit <- model$fitted.values
+
+    #plot(ti,yi,type='l')
+    #lines(y.fit,col='red')
+
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
+
+  }
+  )
+
+  #Modelo de Regresion - cubseason
+  output$cubseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+
+    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
+
+    m <- input$fore.period
+    n <- length(y)
+    frequency <- input$frequency
+
+    yi <- ts(y[1:(n-m)],frequency=frequency)
+    fechas.model <- fechas[1:(n-m)]
+    ti <- seq(1:length(yi))
+    ti2 <- ti*ti
+    ti3 <- ti*ti*ti
+    It <- seasonaldummy(yi)
+
+    model <- lm(yi ~ ti+ti2+ti3+It)
+    y.fit <- model$fitted.values
+
+    #plot(ti,yi,type='l')
+    #lines(y.fit,col='red')
+
+    ggplot(data.frame(fechas.model,yi,y.fit))+
+      geom_line(aes(fechas.model,yi),col='blue')+
+      geom_line(aes(fechas.model,y.fit),col='red')+
+      ylab('Data')+
+      xlab('Time')+
+      scale_y_continuous(expand = c(0,0))
 
   }
   )
