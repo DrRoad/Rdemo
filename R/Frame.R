@@ -5,6 +5,7 @@ library(forecast)
 library(ggplot2)
 #library(shinythemes)
 source('R/medidas.R')
+source('R/plot.model.R')
 
 #<<<<<<< HEAD
 #ui <- fluidPage(theme = shinytheme("flatly"),
@@ -198,29 +199,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 1
 
-    yi <- ts(y[1:(n-m)],frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-
-    model <- lm(yi ~ ti)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
@@ -231,30 +224,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 2
 
-    yi <- ts(y[1:(n-m)],frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-    ti2 <- ti*ti
-
-    model <- lm(yi ~ ti + ti2)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
@@ -265,31 +249,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 3
 
-    yi <- ts(y[1:(n-m)],frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-    ti2 <- ti*ti
-    ti3 <- ti*ti*ti
-
-    model <- lm(yi ~ ti + ti2 + ti3)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
@@ -300,30 +274,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 4
 
-    yi <- ts(y[1:(n-m)],frequency=frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-    It <- seasonaldummy(yi)
-
-    model <- lm(yi ~ ti+It)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
@@ -334,31 +299,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 5
 
-    yi <- ts(y[1:(n-m)],frequency=frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-    ti2 <- ti*ti
-    It <- seasonaldummy(yi)
-
-    model <- lm(yi ~ ti+ti2+It)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
@@ -369,32 +324,21 @@ server <- function(input, output) {
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 6
 
-    yi <- ts(y[1:(n-m)],frequency=frequency)
-    fechas.model <- fechas[1:(n-m)]
-    ti <- seq(1:length(yi))
-    ti2 <- ti*ti
-    ti3 <- ti*ti*ti
-    It <- seasonaldummy(yi)
-
-    model <- lm(yi ~ ti+ti2+ti3+It)
-    y.fit <- model$fitted.values
-
-    #plot(ti,yi,type='l')
-    #lines(y.fit,col='red')
-
-    ggplot(data.frame(fechas.model,yi,y.fit))+
-      geom_line(aes(fechas.model,yi),col='blue')+
-      geom_line(aes(fechas.model,y.fit),col='red')+
-      ylab('Data')+
-      xlab('Time')+
-      scale_y_continuous(expand = c(0,0))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
