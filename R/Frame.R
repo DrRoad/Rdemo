@@ -117,9 +117,6 @@ server <- function(input, output) {
                      alpha=0.4)+
       labs(x='Datos',y='Count')
 
-    #hist(datos, breaks = bins, col = "#75AADB", border = "white",
-    #     xlab = "x",
-    #     main = "f(x)")
   })
   #Densidad
   output$density <- renderPlot({
@@ -127,14 +124,6 @@ server <- function(input, output) {
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
-
-    #bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
-
-    #hist(datos, breaks = bins, col = "#75AADB", border = "white",
-    #     xlab = "x",
-    #     main = "f(x)",
-    #     probability = TRUE)
-    #lines(density(datos),col='red')})
 
     ggplot(data=df,aes(df[,ncol(df)]))+
       geom_histogram(aes(y=..density..),
@@ -159,10 +148,6 @@ server <- function(input, output) {
 
     ggplot(obser, aes(fechas, datos)) + geom_line(aes(fechas,datos),color='blue4') +
       xlab("Seq Time") + ylab("Data")
-
-
-    #plot(seq(1:length(datos)),panel.first = grid(),datos,type='l',col='blue',xlab='Seq Time',ylab='Data')}
-    #plot(vfechas,x, xaxt="n", panel.first = grid(),type='l',ylab='produccion.mes.')}
 
   }
   )
