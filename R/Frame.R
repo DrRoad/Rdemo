@@ -3,7 +3,7 @@ library(e1071)
 library(dataseries)
 library(forecast)
 library(ggplot2)
-#library(shinythemes)
+library(shinythemes)
 source('R/medidas.R')
 source('R/plot.model.R')
 
@@ -11,7 +11,7 @@ source('R/plot.model.R')
 #ui <- fluidPage(theme = shinytheme("flatly"),
 #titlePanel("Ajuste para Series de Tiempo"),
 #=======
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Time Series Estimation"),
   #>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
   navbarPage("",
