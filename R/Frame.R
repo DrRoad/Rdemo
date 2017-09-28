@@ -3,16 +3,17 @@ library(e1071)
 library(dataseries)
 library(forecast)
 library(ggplot2)
-library(shinythemes)
+#library(shinythemes)
 source('R/medidas.R')
+source('R/plot.model.R')
 
 #<<<<<<< HEAD
 #ui <- fluidPage(theme = shinytheme("flatly"),
-  #titlePanel("Ajuste para Series de Tiempo"),
+#titlePanel("Ajuste para Series de Tiempo"),
 #=======
 ui <- fluidPage(
   titlePanel("Time Series Estimation"),
-#>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
+  #>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
   navbarPage("",
              tabPanel("Data",
                       sidebarPanel(
@@ -67,15 +68,15 @@ ui <- fluidPage(
                           tags$style(type='text/css',
                                      ".nav-tabs {font-size: 10px} ")),
                         tabsetPanel(type='tabs',
-                        tabPanel('Linear',plotOutput('linear')),
-                        tabPanel('Cuadratic'),
-                        tabPanel('Cubic'),
-                        tabPanel('Linear&season'),
-                        tabPanel('Cuadratic&season'),
-                        tabPanel('Cubic&season')
+                                    tabPanel('Linear',plotOutput('linear')),
+                                    tabPanel('Cuadratic',plotOutput('cuadratic')),
+                                    tabPanel('Cubic',plotOutput('cubic')),
+                                    tabPanel('Linear&season',plotOutput('linearseason')),
+                                    tabPanel('Cuadratic&season',plotOutput('cuadseason')),
+                                    tabPanel('Cubic&season',plotOutput('cubseason'))
 
 
-                      ))
+                        ))
 
              ),
              tabPanel("Residuals Analysis"
@@ -164,7 +165,7 @@ server <- function(input, output) {
     #plot(vfechas,x, xaxt="n", panel.first = grid(),type='l',ylab='produccion.mes.')}
 
   }
-    )
+  )
 
   #ECDF
   output$ecdf <- renderPlot({
@@ -191,29 +192,153 @@ server <- function(input, output) {
     data.frame(medidas(datos))
   })
 
+
+  #Modelo de Regresion - Lineal
   output$linear <- renderPlot({
 
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
-
-    y <- ts(datos,freq=input$frequency, start = c(input$year,input$init))
-
-    m <- input$fore.period
-    n <- length(y)
+    fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 1
 
-    yi <- ts(y[1:(n-m)],frequency)
-    ti <- seq(1:length(yi))
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
-    linear.model <- lm(yi ~ ti)
-    linear.fit <- linear.model$fitted.values
+  }
+  )
 
-    #plot(ti,yi,type='l')
-    #lines(linear.fit,col='red')
+  #Modelo de Regresion - Cuadratic
+  output$cuadratic <- renderPlot({
 
-    ggplot(data.frame(ti,yi,linear.fit),aes(ti,yi))+
-      geom_line(aes(ti,yi),col='blue')+
-      geom_line(aes(ti,linear.fit),col='red')
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+    frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 2
+
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
+
+  }
+  )
+
+  #Modelo de Regresion - Cubica
+  output$cubic <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+    frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 3
+
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
+
+  }
+  )
+
+  #Modelo de Regresion - Linealseason
+  output$linearseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+    frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 4
+
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
+
+  }
+  )
+
+  #Modelo de Regresion - cuadseason
+  output$cuadseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+    frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 5
+
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
+
+  }
+  )
+
+  #Modelo de Regresion - cubseason
+  output$cubseason <- renderPlot({
+
+    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+    datos <- df[,ncol(df)]
+    fechas <- as.Date(df[,ncol(df)-1])
+    frequency <- input$frequency
+    m <- input$fore.period
+    año.inicio <- input$year
+    periodo.inicio <- input$init
+    number.model <- 6
+
+    plot.model(
+      datos,
+      fechas,
+      frequency,
+      m,
+      año.inicio,
+      periodo.inicio,
+      number.model
+    )
 
   }
   )
