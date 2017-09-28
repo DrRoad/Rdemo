@@ -79,13 +79,22 @@ ui <- fluidPage(
                         ))
 
              ),
-             tabPanel("Residuals Analysis"
+             tabPanel("Residuals Analysis",
+                      mainPanel(
+                        tabsetPanel(type='tabs',
+                                    tabPanel('Linear',plotOutput('Reslinear')),
+                                    tabPanel('Cuadratic',plotOutput('Rescuadratic')),
+                                    tabPanel('Cubic',plotOutput('Rescubic')),
+                                    tabPanel('Linear&season',plotOutput('Reslinearseason')),
+                                    tabPanel('Cuadratic&season',plotOutput('Rescuadseason')),
+                                    tabPanel('Cubic&season',plotOutput('Rescubseason'))
+                      )
              )
 
 
 
   )
-)
+))
 server <- function(input, output) {
   df <- c()
 
