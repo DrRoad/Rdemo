@@ -6,6 +6,7 @@ library(ggplot2)
 library(shinythemes)
 source('R/medidas.R')
 source('R/plot.model.R')
+source('R/medidas.reg.R')
 
 #<<<<<<< HEAD
 #ui <- fluidPage(theme = shinytheme("flatly"),
@@ -68,12 +69,18 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                           tags$style(type='text/css',
                                      ".nav-tabs {font-size: 10px} ")),
                         tabsetPanel(type='tabs',
-                                    tabPanel('Linear',plotOutput('linear')),
-                                    tabPanel('Cuadratic',plotOutput('cuadratic')),
-                                    tabPanel('Cubic',plotOutput('cubic')),
-                                    tabPanel('Linear&season',plotOutput('linearseason')),
-                                    tabPanel('Cuadratic&season',plotOutput('cuadseason')),
-                                    tabPanel('Cubic&season',plotOutput('cubseason'))
+                                    tabPanel('Linear',plotOutput('linear'),
+                                             verbatimTextOutput('linear.reg')),
+                                    tabPanel('Cuadratic',plotOutput('cuadratic'),
+                                             verbatimTextOutput('cuad.reg')),
+                                    tabPanel('Cubic',plotOutput('cubic'),
+                                             verbatimTextOutput('cubic.reg')),
+                                    tabPanel('Linear&season',plotOutput('linearseason'),
+                                             verbatimTextOutput('linses.reg')),
+                                    tabPanel('Cuadratic&season',plotOutput('cuadseason'),
+                                             verbatimTextOutput('cuadses.reg')),
+                                    tabPanel('Cubic&season',plotOutput('cubseason'),
+                                             verbatimTextOutput('cubses.reg'))
 
 
                         ))
@@ -342,6 +349,138 @@ server <- function(input, output) {
 
   }
   )
+
+ output$linear.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 1
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$cuad.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 2
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$cubic.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 3
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$linses.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 4
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$cuadses.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 5
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$cubses.reg <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   año.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 6
+
+   medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     año.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
 
 }
 

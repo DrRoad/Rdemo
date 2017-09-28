@@ -33,13 +33,13 @@ medidas.reg <- function(
     k <- 4
   } else if (number.model == 4) {
     model <- lm(yi ~ ti + It)
-    k <- 2 + (frecuency - 1)
+    k <- 2 + (frequency - 1)
   } else if (number.model == 5){
     model <- lm(yi ~ ti + ti2 + It)
-    k <- 3 + (frecuency - 1)
+    k <- 3 + (frequency - 1)
   } else {
     model <- lm(yi ~ ti + ti2 + ti3 + It)
-    k <- 4 + (frecuency - 1)
+    k <- 4 + (frequency - 1)
   }
 
   y.est <- model$fitted.values
