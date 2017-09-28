@@ -3,7 +3,7 @@ library(e1071)
 library(dataseries)
 library(forecast)
 library(ggplot2)
-#library(shinythemes)
+library(shinythemes)
 source('R/medidas.R')
 source('R/plot.model.R')
 
@@ -11,7 +11,7 @@ source('R/plot.model.R')
 #ui <- fluidPage(theme = shinytheme("flatly"),
 #titlePanel("Ajuste para Series de Tiempo"),
 #=======
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Time Series Estimation"),
   #>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
   navbarPage("",
@@ -79,13 +79,22 @@ ui <- fluidPage(
                         ))
 
              ),
-             tabPanel("Residuals Analysis"
+             tabPanel("Residuals Analysis",
+                      mainPanel(
+                        tabsetPanel(type='tabs',
+                                    tabPanel('Linear',plotOutput('Reslinear')),
+                                    tabPanel('Cuadratic',plotOutput('Rescuadratic')),
+                                    tabPanel('Cubic',plotOutput('Rescubic')),
+                                    tabPanel('Linear&season',plotOutput('Reslinearseason')),
+                                    tabPanel('Cuadratic&season',plotOutput('Rescuadseason')),
+                                    tabPanel('Cubic&season',plotOutput('Rescubseason'))
+                      )
              )
 
 
 
   )
-)
+))
 server <- function(input, output) {
   df <- c()
 
@@ -117,9 +126,6 @@ server <- function(input, output) {
                      alpha=0.4)+
       labs(x='Datos',y='Count')
 
-    #hist(datos, breaks = bins, col = "#75AADB", border = "white",
-    #     xlab = "x",
-    #     main = "f(x)")
   })
   #Densidad
   output$density <- renderPlot({
@@ -127,14 +133,6 @@ server <- function(input, output) {
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
-
-    #bins <- seq(min(datos), max(datos), length.out = input$bins + 1)
-
-    #hist(datos, breaks = bins, col = "#75AADB", border = "white",
-    #     xlab = "x",
-    #     main = "f(x)",
-    #     probability = TRUE)
-    #lines(density(datos),col='red')})
 
     ggplot(data=df,aes(df[,ncol(df)]))+
       geom_histogram(aes(y=..density..),
@@ -158,11 +156,7 @@ server <- function(input, output) {
     obser <- data.frame(fechas,datos)
 
     ggplot(obser, aes(fechas, datos)) + geom_line(aes(fechas,datos),color='blue4') +
-      xlab("Seq Time") + ylab("Data")
-
-
-    #plot(seq(1:length(datos)),panel.first = grid(),datos,type='l',col='blue',xlab='Seq Time',ylab='Data')}
-    #plot(vfechas,x, xaxt="n", panel.first = grid(),type='l',ylab='produccion.mes.')}
+      xlab("Time") + ylab("Data")
 
   }
   )
@@ -196,6 +190,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Lineal
   output$linear <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -221,6 +216,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Cuadratic
   output$cuadratic <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -246,6 +242,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Cubica
   output$cubic <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -271,6 +268,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Linealseason
   output$linearseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -296,6 +294,7 @@ server <- function(input, output) {
   #Modelo de Regresion - cuadseason
   output$cuadseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -321,6 +320,7 @@ server <- function(input, output) {
   #Modelo de Regresion - cubseason
   output$cubseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
