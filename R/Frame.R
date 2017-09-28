@@ -147,7 +147,7 @@ server <- function(input, output) {
     obser <- data.frame(fechas,datos)
 
     ggplot(obser, aes(fechas, datos)) + geom_line(aes(fechas,datos),color='blue4') +
-      xlab("Seq Time") + ylab("Data")
+      xlab("Time") + ylab("Data")
 
   }
   )
@@ -181,6 +181,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Lineal
   output$linear <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -206,6 +207,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Cuadratic
   output$cuadratic <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -231,6 +233,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Cubica
   output$cubic <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -256,6 +259,7 @@ server <- function(input, output) {
   #Modelo de Regresion - Linealseason
   output$linearseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -281,6 +285,7 @@ server <- function(input, output) {
   #Modelo de Regresion - cuadseason
   output$cuadseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
@@ -306,6 +311,7 @@ server <- function(input, output) {
   #Modelo de Regresion - cubseason
   output$cubseason <- renderPlot({
 
+    req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
     datos <- df[,ncol(df)]
     fechas <- as.Date(df[,ncol(df)-1])
