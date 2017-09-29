@@ -70,7 +70,7 @@ plot.model <- function(
     model <- lm(yi ~ ti + ti2 + ti3 + It)
     Xtf <- cbind(rep(1,m),tf,tf2,tf3,Itf)
     ypron <- predict(model, newdata = data.frame(cbind(data.frame(ti=tf,ti2=tf2,ti3=tf3),It=I(Itf))))
-    ypron <- ts(yf,frequency = frequency)
+    ypron <- ts(ypron,frequency = frequency)
   }
 
   y.fit <- model$fitted.values
