@@ -52,3 +52,4 @@ residuals.reg <- function(
     p <- p +geom_line(yintercept=0)+geom_smooth()
     return(p)
 }
+
