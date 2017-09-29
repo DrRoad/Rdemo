@@ -49,15 +49,12 @@ Arroja la asimetría de los valores incluidos en la columna de datos
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function (x)
-{
-medidas <- function(x){
-  M <- c()
 
-  M <-summary(x)
-  M <- c(M,kurtosis(x))
-  names(M)[length(M)]='kurtosis'
-  return (M)
+x<-c(4,6,8,10,0,-10,6,0)
+
+medidas(x)
+
+
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
