@@ -4,7 +4,12 @@
 \title{Arroja los estadisticos básicos de la columna de datos ingresada}
 %%  ~~function to do ... ~~
 }
-\description{Inicialmente la función contiene una agrupación que inicializa vacía para posteriormente recibir información que esté arrojada en una columna de datos, posteriormente la función permite arrojar 3 estadísticos de análisis (Kurtosis, Skweness y Sd)
+\description{La función recibe
+
+x<-c()
+
+Como datos, que posteriormente son usados para el calculo de estadisticos: Kurtosis, Skweness y Sd.
+
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -31,7 +36,7 @@ sd {x}
 \references{
 %% ~put references to the literature/web site here ~
 }
-\author{
+\author{ David Rivera <dfriveraol@unal.edu.co>
 %%  ~~who you are~~
 }
 \note{

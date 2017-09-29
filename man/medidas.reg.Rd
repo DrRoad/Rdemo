@@ -1,21 +1,47 @@
-\name{medidas}
-\alias{medidas}
+\name{medidas.reg}
+\alias{medidas.reg}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
 }
 \description{
+Recibe
+
+datos,                  #Columna de datos de la serie de tiempo
+  fechas,                 #Columna de fechas de la serie de tiempo
+  frequency,              #Frecuencua atribuida a la serie de tiempo
+  m,                      #Cantidad de periodos a pronosticar
+  ano.inicio,             #ano inicio estimacion
+  periodo.inicio,         #Periodo inicio estimacion
+  number.model            #Numero modelo a seleccionar
+
+Para calcular el comportamiento de la serie de tiempo dentro 6 modelos pre establecidos: Lineal, Cuadrático,Cúbico y a su vez estos, cada uno con variables indicadoras
+
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-medidas(x)
+medidas.reg(
+  datos,
+  fechas,
+  frequency,
+  m,
+  ano.inicio,
+  periodo.inicio,
+  number.model)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{datos}{Columna de datos de la serie de tiempo}
+  \item{fechas}{Columna de fechas de la serie de tiempo}
+  \item{frequency}{Frecuencia atribuida a la serie de tiempo}
+  \item{m}{Cantidad de periodos a pronosticar}
+  \item{ano.inicio}{ano inicio estimacion}
+  \item{periodo.inicio}{Periodo inicio estimacion}
+  \item{number.model}{Numero modelo a seleccionar}
 %%     ~~Describe \code{x} here~~
 }
-}
+
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
