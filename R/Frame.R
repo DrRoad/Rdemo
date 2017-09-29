@@ -203,7 +203,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 1
 
@@ -212,7 +212,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -229,7 +229,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 2
 
@@ -238,7 +238,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -255,7 +255,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 3
 
@@ -264,7 +264,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -281,7 +281,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 4
 
@@ -290,7 +290,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -307,7 +307,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 5
 
@@ -316,7 +316,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -333,7 +333,7 @@ server <- function(input, output) {
     fechas <- as.Date(df[,ncol(df)-1])
     frequency <- input$frequency
     m <- input$fore.period
-    año.inicio <- input$year
+    ano.inicio <- input$year
     periodo.inicio <- input$init
     number.model <- 6
 
@@ -342,7 +342,7 @@ server <- function(input, output) {
       fechas,
       frequency,
       m,
-      año.inicio,
+      ano.inicio,
       periodo.inicio,
       number.model
     )
@@ -357,7 +357,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 1
 
@@ -366,7 +366,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )
@@ -379,7 +379,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 2
 
@@ -388,7 +388,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )
@@ -401,7 +401,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 3
 
@@ -410,7 +410,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )
@@ -423,7 +423,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 4
 
@@ -432,7 +432,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )
@@ -445,7 +445,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 5
 
@@ -454,7 +454,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )
@@ -467,7 +467,7 @@ server <- function(input, output) {
    fechas <- as.Date(df[,ncol(df)-1])
    frequency <- input$frequency
    m <- input$fore.period
-   año.inicio <- input$year
+   ano.inicio <- input$year
    periodo.inicio <- input$init
    number.model <- 6
 
@@ -476,7 +476,7 @@ server <- function(input, output) {
      fechas,
      frequency,
      m,
-     año.inicio,
+     ano.inicio,
      periodo.inicio,
      number.model
    )

@@ -7,12 +7,12 @@ plot.model <- function(
   fechas,                 #Columna de fechas de la serie de tiempo
   frequency,              #Frecuencua atribuida a la serie de tiempo
   m,                      #Cantidad de periodos a pronosticar
-  año.inicio,             #Año inicio estimacion
+  ano.inicio,             #ano inicio estimacion
   periodo.inicio,         #Periodo inicio estimacion
   number.model            #Numero modelo a seleccionar
 ){
 
-  y <- ts(data = datos,frequency = frequency, start = c(año.inicio, periodo.inicio))
+  y <- ts(data = datos,frequency = frequency, start = c(ano.inicio, periodo.inicio))
 
   n <- length(y)
 

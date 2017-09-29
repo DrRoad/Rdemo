@@ -5,12 +5,12 @@ medidas.reg <- function(
   fechas,
   frequency,
   m,
-  año.inicio,
+  ano.inicio,
   periodo.inicio,
   number.model
 ){
 
-  y <- ts(data = datos,frequency = frequency, start = c(año.inicio, periodo.inicio))
+  y <- ts(data = datos,frequency = frequency, start = c(ano.inicio, periodo.inicio))
 
   n <- length(y)
 
