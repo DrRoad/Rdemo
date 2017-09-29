@@ -19,9 +19,9 @@ medidas(x)
 \details{M es una agrupación de datos que inicializa vacío y después toma los valores de los estadísticos de x
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{Arroja la curtosis (grado de concentración) de los valores incluidos en la columna de datos
-Arroja la desviación estándar de los valores incluidos en la columna de datos
-Arroja la asimetría de los valores incluidos en la columna de datos
+\value{kurtosis {x}
+skweness {x}
+sd {x}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -49,15 +49,11 @@ Arroja la asimetría de los valores incluidos en la columna de datos
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function (x)
-{
-medidas <- function(x){
-  M <- c()
 
-  M <-summary(x)
-  M <- c(M,kurtosis(x))
-  names(M)[length(M)]='kurtosis'
-  return (M)
+x<-c(4,6,8,10,0,-10,6,0)
+
+medidas(x)
+
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
