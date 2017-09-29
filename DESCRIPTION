@@ -2,6 +2,7 @@ Package: ShinyProj
 Type: Package
 Title: Time Series Evaluate
 Version: 0.1.0
+Date: 2017-09-29
 Author: David Rivera <dfriveraol@unal.edu.co>; Maria Isabel Arango <miarangoa@unal.edu.co>, Jose Catano <jcatanog@unal.edu.co>
 Maintainer: David Rivera <dfriveraol@unal.edu.co>
 Description: Paquete para evaluar el comportamiento de una serie de tiempo, teniendo en cuenta diferentes modelos.

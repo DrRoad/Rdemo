@@ -21,7 +21,7 @@ medidas(x)
 %%     ~~Describe \code{x} here~~
 }
 }
-\details{M es una agrupación de datos que inicializa vacío y después toma los valores de los estadísticos de x
+\details{M es una agrupación de datos que inicializa vacía y después toma los valores de los estadísticos de x
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{kurtosis {x}
