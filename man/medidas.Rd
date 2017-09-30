@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Arroja los estadisticos básicos de la columna de datos ingresada}
 %%  ~~function to do ... ~~
-}
+
 \description{La función recibe
 
 x<-c()
@@ -20,7 +20,7 @@ medidas(x)
   \item{x}{A column of Data}
 %%     ~~Describe \code{x} here~~
 }
-}
+
 \details{M es una agrupación de datos que inicializa vacía y después toma los valores de los estadísticos de x
 %%  ~~ If necessary, more details than the description above ~~
 }
@@ -60,7 +60,6 @@ x<-c(4,6,8,10,0,-10,6,0)
 medidas(x)
 
   }
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{kurtosis}% use one of  RShowDoc("KEYWORDS")
