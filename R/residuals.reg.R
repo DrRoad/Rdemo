@@ -93,4 +93,3 @@ residuals.reg <- function(
 
     return(grid.arrange(p,p1,p2,p3, ncol=2))
 }
-
