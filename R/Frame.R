@@ -9,6 +9,7 @@ source('R/plot.model.R')
 source('R/medidas.reg.R')
 source('R/acc.model.R')
 
+callinterface <- function(){
 ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Time Series Estimation"),
 
@@ -623,3 +624,6 @@ runApp(shinyApp(
   ui = ui,
   server = server
 ))
+
+
+}
