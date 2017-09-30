@@ -37,37 +37,32 @@ output$resplot <- renderPlot({
   #Graficación Modelos de Ajuste
 
   par(mfrow=c(2,2))
+  options(repr.plot.width=10, repr.plot.height=6) #Ajusto el ancho del grafico
 
 if(model == 3){
-  #par(mfrow=c(2,2)) #Divido el area del grafico en 2 filas y 2 columnas
-  options(repr.plot.width=10, repr.plot.height=6) #Ajusto el ancho del grafico
   r3=mod3$residuals
-  plot(t,r3, type='l', ylab='',main="Residuales Modelo Cubico",col="red") #residuales para modelo cubico
+  plot(t,r3, type='l', ylab='',main="Residuales Modelo Cubico",col="green") #residuales para modelo cubico
   abline(h=0,lty=2)
-  plot(density(r3),xlab='x', main="Densidad Residuales Modelo Cubico",col="red") #densidad para modelo cubico
+  plot(density(r3),xlab='x', main="Densidad Residuales Modelo Cubico",col="green") #densidad para modelo cubico
   qqnorm(r3)               # Grafica para realizar prueba de normalidad
   qqline(r3,col=2)
   acf(r3, ci.type="ma",60) # Prueba ACF (autocorrelación)
 
 } else if(model == 2){
-  #par(mfrow=c(2,2))
-  options(repr.plot.width=10, repr.plot.height=6)
   r2=mod2$residuals
-  plot(t,r2, type='l', ylab='',main="Residuales Modelo Cuadratico",col="red")
+  plot(t,r2, type='l', ylab='',main="Residuales Modelo Cuadratico",col="green")
   abline(h=0,lty=2)
-  plot(density(r2),xlab='x', main="Densidad Residuales Modelo Cuadratico",col="red")
-  qqnorm(r2)               # Grafica qqnorm para probar normalidad
+  plot(density(r2),xlab='x', main="Densidad Residuales Modelo Cuadratico",col="green")
+  qqnorm(r2)               # Grafica para realizar prueba de normalidad
   qqline(r2,col=2)
-  acf(r2, ci.type="ma",60) # Prueba ACF
+  acf(r2, ci.type="ma",60) # Prueba ACF (autocorrelación)
 
 } else {
-  #par(mfrow=c(2,2))
-  options(repr.plot.width=10, repr.plot.height=6)
   r1=mod1$residuals
-  plot(t,r1, type='l', ylab='',main="Residuales Modelo Lineal",col="red")
+  plot(t,r1, type='l', ylab='',main="Residuales Modelo Lineal",col="green")
   abline(h=0,lty=2)
-  plot(density(r1),xlab='x', main="Densidad Residuales Modelo Lineal",col="red")
-  qqnorm(r1)               # Grafica qqnorm para probar normalidad
+  plot(density(r1),xlab='x', main="Densidad Residuales Modelo Lineal",col="green")
+  qqnorm(r1)               # Grafica para realizar prueba de normalidad
   qqline(r1,col=2)
-  acf(r1, ci.type="ma",60) # Prueba ACF
+  acf(r1, ci.type="ma",60) # Prueba ACF (autocorrelación)
 }
