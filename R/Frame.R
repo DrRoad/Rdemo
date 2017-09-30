@@ -8,6 +8,7 @@ source('R/medidas.R')
 source('R/plot.model.R')
 source('R/medidas.reg.R')
 source('R/acc.model.R')
+source('R/residuals.reg.R')
 
 callinterface <- function(){
 ui <- fluidPage(theme = shinytheme("flatly"),
@@ -618,7 +619,139 @@ server <- function(input, output) {
    )
  })
 
+ output$Reslinear <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 1
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Rescuadratic <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 2
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Rescubic <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 3
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Reslinearseason <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 4
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Rescuadseason <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 5
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Rescubseason <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 6
+
+   residuals.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
 }
+
 
 runApp(shinyApp(
   ui = ui,
