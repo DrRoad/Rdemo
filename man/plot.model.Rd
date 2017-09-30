@@ -41,7 +41,7 @@ datos,                  #Columna de datos de la serie de tiempo
 
 %%     ~~Describe \code{x} here~~
 }
-}
+
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
