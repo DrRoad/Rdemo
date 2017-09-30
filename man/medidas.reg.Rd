@@ -1,7 +1,7 @@
 \name{medidas.reg}
 \alias{medidas.reg}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{Medidas Modelo de Regresion
 %%  ~~function to do ... ~~
 }
 \description{
