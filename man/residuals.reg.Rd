@@ -82,7 +82,7 @@ datos,                  #Columna de datos de la serie de tiempo
   periodo.inicio,         #Periodo inicio estimacion
   number.model            #Numero modelo a seleccionar
 )
-{
+{#hola
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
