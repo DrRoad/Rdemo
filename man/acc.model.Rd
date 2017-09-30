@@ -1,11 +1,11 @@
-\name{medidas.reg}
-\alias{medidas.reg}
+\name{acc.model}
+\alias{acc.model}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+Calculo parámetros de error
 }
 \description{
-Recibe
+Entrada de
 
 datos,                  #Columna de datos de la serie de tiempo
   fechas,                 #Columna de fechas de la serie de tiempo
@@ -15,37 +15,37 @@ datos,                  #Columna de datos de la serie de tiempo
   periodo.inicio,         #Periodo inicio estimacion
   number.model            #Numero modelo a seleccionar
 
-Para calcular el comportamiento de la serie de tiempo dentro 6 modelos pre establecidos: Lineal, Cuadrático,Cúbico y a su vez estos, cada uno con variables indicadoras
-
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  para calcular los parámteros de error arrojados por el modelo
 }
 \usage{
-medidas.reg(
-  datos,
-  fechas,
-  frequency,
-  m,
-  ano.inicio,
-  periodo.inicio,
-  number.model)
-
+acc.model(
+datos,                  #Columna de datos de la serie de tiempo
+  fechas,                 #Columna de fechas de la serie de tiempo
+  frequency,              #Frecuencua atribuida a la serie de tiempo
+  m,                      #Cantidad de periodos a pronosticar
+  ano.inicio,             #ano inicio estimacion
+  periodo.inicio,         #Periodo inicio estimacion
+  number.model            #Numero modelo a seleccionar
+)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{datos}{Columna de datos de la serie de tiempo}
   \item{fechas}{Columna de fechas de la serie de tiempo}
-  \item{frequency}{Frecuencia atribuida a la serie de tiempo}
+  \item{frequency}{Frecuencua atribuida a la serie de tiempo}
   \item{m}{Cantidad de periodos a pronosticar}
   \item{ano.inicio}{ano inicio estimacion}
   \item{periodo.inicio}{Periodo inicio estimacion}
   \item{number.model}{Numero modelo a seleccionar: 1: Lineal, 2: Cuadratico, 3: cubico, 4: Lineal con Indicadoras, 5:Cuadratica con Indicadoras, 6:Cubica con Indicadoras}
+
+
 %%     ~~Describe \code{x} here~~
 }
-
+}
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{Grafica la serie de tiempo ajustada y pronosticada segun los parametros introducidos
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -56,7 +56,7 @@ medidas.reg(
 %% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
+David Rivera <dfriveraol@unal.edu.co>
 }
 \note{
 %%  ~~further notes~~
@@ -73,11 +73,20 @@ medidas.reg(
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function (x)
+acc.model(
+datos,                  #Columna de datos de la serie de tiempo
+  fechas,                 #Columna de fechas de la serie de tiempo
+  frequency,              #Frecuencua atribuida a la serie de tiempo
+  m,                      #Cantidad de periodos a pronosticar
+  ano.inicio,             #ano inicio estimacion
+  periodo.inicio,         #Periodo inicio estimacion
+  number.model            #Numero modelo a seleccionar
+)
+
+
 {
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{accuracy}% use one of  RShowDoc("KEYWORDS")

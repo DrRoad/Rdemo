@@ -2,7 +2,7 @@ library(dataseries)
 library(forecast)
 library(ggplot2)
 
-plot.model <- function(
+acc.model <- function(
   datos,                  #Columna de datos de la serie de tiempo
   fechas,                 #Columna de fechas de la serie de tiempo
   frequency,              #Frecuencua atribuida a la serie de tiempo
@@ -71,19 +71,6 @@ plot.model <- function(
     ypron <- ts(ypron,frequency = frequency)
   }
 
-  y.fit <- model$fitted.values
-
-
-  dataplot1<-data.frame(f1=fechas,d1=y)
-  dataplot2<-data.frame(f1=fechas.model,d1=y.fit)
-  dataplot3<-data.frame(f1=fechas.pron,d1=ypron)
-
-  ggplot(dataplot1,aes(f1,d1))+
-    geom_line()+
-    geom_line(data=dataplot2,aes(f1,d1,color="Fitted"))+
-    geom_line(data=dataplot3,aes(f1,d1,color="Forecasted"))+
-    ylab('Data')+
-    xlab('Time')+
-    scale_y_continuous(expand = c(0,0))
+  return(data.frame(t(accuracy(ypron,yf))))
 
 }

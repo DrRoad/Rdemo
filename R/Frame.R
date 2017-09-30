@@ -7,14 +7,11 @@ library(shinythemes)
 source('R/medidas.R')
 source('R/plot.model.R')
 source('R/medidas.reg.R')
+source('R/acc.model.R')
 
-#<<<<<<< HEAD
-#ui <- fluidPage(theme = shinytheme("flatly"),
-#titlePanel("Ajuste para Series de Tiempo"),
-#=======
 ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Time Series Estimation"),
-  #>>>>>>> 77a651031ff21ba36382240a3f8ad2ba235e4760
+
   navbarPage("",
              tabPanel("Data",
                       sidebarPanel(
@@ -89,12 +86,18 @@ ui <- fluidPage(theme = shinytheme("flatly"),
              tabPanel("Residuals Analysis",
                       mainPanel(
                         tabsetPanel(type='tabs',
-                                    tabPanel('Linear',plotOutput('Reslinear')),
-                                    tabPanel('Cuadratic',plotOutput('Rescuadratic')),
-                                    tabPanel('Cubic',plotOutput('Rescubic')),
-                                    tabPanel('Linear&season',plotOutput('Reslinearseason')),
-                                    tabPanel('Cuadratic&season',plotOutput('Rescuadseason')),
-                                    tabPanel('Cubic&season',plotOutput('Rescubseason'))
+                                    tabPanel('Linear',plotOutput('Reslinear'),
+                                             verbatimTextOutput('acclinear')),
+                                    tabPanel('Cuadratic',plotOutput('Rescuadratic'),
+                                             verbatimTextOutput('acccuad')),
+                                    tabPanel('Cubic',plotOutput('Rescubic'),
+                                             verbatimTextOutput('acccub')),
+                                    tabPanel('Linear&season',plotOutput('Reslinearseason'),
+                                             verbatimTextOutput('acclinsea')),
+                                    tabPanel('Cuadratic&season',plotOutput('Rescuadseason'),
+                                             verbatimTextOutput('acccuasea')),
+                                    tabPanel('Cubic&season',plotOutput('Rescubseason'),
+                                             verbatimTextOutput('acccubsea'))
                       )
              )
 
@@ -472,6 +475,138 @@ server <- function(input, output) {
    number.model <- 6
 
    medidas.reg(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acclinear <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 1
+
+   acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acccuad <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 2
+
+   acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acccub <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 3
+
+   acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acclinsea <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 4
+
+   acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acccuasea <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 5
+
+   acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$acccubsea <- renderPrint({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 6
+
+   acc.model(
      datos,
      fechas,
      frequency,
