@@ -82,6 +82,7 @@ residuals.reg <- function(
     ww <- acf(r, plot = FALSE)
     www <- with(ww, data.frame(lag, acf))
     significance_level <- qnorm((1 + 0.95)/2)/sqrt(sum(!is.na(r)))
+
     p3 <- ggplot(data = www, mapping = aes(x = lag, y = acf)) +
       geom_hline(aes(yintercept = 0)) +
       geom_hline(yintercept=c(significance_level,-significance_level), lty=3, col='blue') +
