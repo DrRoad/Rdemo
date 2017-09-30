@@ -8,6 +8,7 @@ source('R/medidas.R')
 source('R/plot.model.R')
 source('R/medidas.reg.R')
 source('R/acc.model.R')
+source('R/residuals.reg.R')
 
 ui <- fluidPage(theme = shinytheme("flatly"),
   titlePanel("Time Series Estimation"),
@@ -607,6 +608,28 @@ server <- function(input, output) {
    number.model <- 6
 
    acc.model(
+     datos,
+     fechas,
+     frequency,
+     m,
+     ano.inicio,
+     periodo.inicio,
+     number.model
+   )
+ })
+
+ output$Reslinear <- renderPlot({
+   req(input$file)
+   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
+   datos <- df[,ncol(df)]
+   fechas <- as.Date(df[,ncol(df)-1])
+   frequency <- input$frequency
+   m <- input$fore.period
+   ano.inicio <- input$year
+   periodo.inicio <- input$init
+   number.model <- 1
+
+   residuals.reg(
      datos,
      fechas,
      frequency,
