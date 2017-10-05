@@ -56,13 +56,10 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                )
              )
              ),
-             tabPanel("Regression Model",
+             tabPanel("Regression & Residuals Analisys",
                       sidebarPanel(
+
                         h5(helpText("Select the estimation parameters below")),
-                        numericInput('frequency',"Frequency",12),
-                        #numericInput('year','Initial Year',2005),
-                        #numericInput('init','Initial Period',1),
-                        numericInput('fore.period','Forecast Period',12),
 
                         #Menu para Seleccion del Modelo de Regresion
 
@@ -71,51 +68,23 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     choices = c('Linear','Cuadratic','Cubic',
                                                 'Linear & Seassons',
                                                 'Cuadratic & Seassons',
-                                                'Cubic & Seassons'))
+                                                'Cubic & Seassons')),
+
+                        numericInput('frequency',"Frequency",12),
+                        numericInput('fore.period','Forecast Period',12)
+
                       ),
-                      mainPanel(
-                        tags$head(
-                          tags$style(type='text/css',
-                                     ".nav-tabs {font-size: 10px} ")),
-                        tabsetPanel(type='tabs',
-                                    tabPanel('Linear',plotOutput('linear'),
-                                             verbatimTextOutput('linear.reg')),
-                                    tabPanel('Cuadratic',plotOutput('cuadratic'),
-                                             verbatimTextOutput('cuad.reg')),
-                                    tabPanel('Cubic',plotOutput('cubic'),
-                                             verbatimTextOutput('cubic.reg')),
-                                    tabPanel('Linear&season',plotOutput('linearseason'),
-                                             verbatimTextOutput('linses.reg')),
-                                    tabPanel('Cuadratic&season',plotOutput('cuadseason'),
-                                             verbatimTextOutput('cuadses.reg')),
-                                    tabPanel('Cubic&season',plotOutput('cubseason'),
-                                             verbatimTextOutput('cubses.reg'))
+                      mainPanel(tabsetPanel(type='tabs',
+                                            tabPanel('Regression',plotOutput('plot.reg'),
+                                            verbatimTextOutput('tab.reg')),
+                                            tabPanel('Residual Analysis',plotOutput('plot.res'),
+                                            verbatimTextOutput('tab.res')))
 
 
-                        ))
 
-             ),
-             tabPanel("Residuals Analysis",
-                      mainPanel(
-                        tabsetPanel(type='tabs',
-                                    tabPanel('Linear',plotOutput('Reslinear'),
-                                             verbatimTextOutput('acclinear')),
-                                    tabPanel('Cuadratic',plotOutput('Rescuadratic'),
-                                             verbatimTextOutput('acccuad')),
-                                    tabPanel('Cubic',plotOutput('Rescubic'),
-                                             verbatimTextOutput('acccub')),
-                                    tabPanel('Linear&season',plotOutput('Reslinearseason'),
-                                             verbatimTextOutput('acclinsea')),
-                                    tabPanel('Cuadratic&season',plotOutput('Rescuadseason'),
-                                             verbatimTextOutput('acccuasea')),
-                                    tabPanel('Cubic&season',plotOutput('Rescubseason'),
-                                             verbatimTextOutput('acccubsea'))
                       )
+
              )
-
-
-
-  )
 ))
 server <- function(input, output) {
   df <- c()
@@ -208,9 +177,22 @@ server <- function(input, output) {
     data.frame(medidas(datos))
   })
 
+  #Funcion para graficas de modelo de regresion y pronosticos
 
-  #Modelo de Regresion - Lineal
-  output$linear <- renderPlot({
+  output$plot.reg <- renderPlot({
+
+    if (input$RegModel=='Linear'){
+      number.model=1}
+    else if (input$RegModel=='Cuadratic'){
+      number.model=2}
+    else if (input$RegModel=='Cubic'){
+      number.model=3}
+    else if (input$RegModel=='Linear & Seassons'){
+      number.model=4}
+    else if (input$RegModel=='Cuadratic & Seassons'){
+      number.model=5}
+    else {
+      number.model=6}
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
@@ -220,7 +202,6 @@ server <- function(input, output) {
     m <- input$fore.period
     ano.inicio <- as.numeric(getYear(fechas[1]))
     periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 1
 
     plot.model(
       datos,
@@ -232,37 +213,24 @@ server <- function(input, output) {
       number.model
     )
 
-  }
-  )
+    #Tabla de Salida de Estadisticos para Modelo de Regresion
 
-  #Modelo de Regresion - Cuadratic
-  output$cuadratic <- renderPlot({
+  })
 
-    req(input$file)
-    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-    datos <- df[,ncol(df)]
-    fechas <- as.Date(df[,ncol(df)-1])
-    frequency <- input$frequency
-    m <- input$fore.period
-    ano.inicio <- as.numeric(getYear(fechas[1]))
-    periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 2
+  output$tab.reg <- renderPrint({
 
-    plot.model(
-      datos,
-      fechas,
-      frequency,
-      m,
-      ano.inicio,
-      periodo.inicio,
-      number.model
-    )
-
-  }
-  )
-
-  #Modelo de Regresion - Cubica
-  output$cubic <- renderPlot({
+    if (input$RegModel=='Linear'){
+      number.model=1}
+    else if (input$RegModel=='Cuadratic'){
+      number.model=2}
+    else if (input$RegModel=='Cubic'){
+      number.model=3}
+    else if (input$RegModel=='Linear & Seassons'){
+      number.model=4}
+    else if (input$RegModel=='Cuadratic & Seassons'){
+      number.model=5}
+    else {
+      number.model=6}
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
@@ -272,9 +240,8 @@ server <- function(input, output) {
     m <- input$fore.period
     ano.inicio <- as.numeric(getYear(fechas[1]))
     periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 3
 
-    plot.model(
+    medidas.reg(
       datos,
       fechas,
       frequency,
@@ -284,11 +251,24 @@ server <- function(input, output) {
       number.model
     )
 
-  }
-  )
+  })
 
-  #Modelo de Regresion - Linealseason
-  output$linearseason <- renderPlot({
+  #Funcion para graficas de modelo Analisis de Residuales
+
+  output$plot.res <- renderPlot({
+
+    if (input$RegModel=='Linear'){
+      number.model=1}
+    else if (input$RegModel=='Cuadratic'){
+      number.model=2}
+    else if (input$RegModel=='Cubic'){
+      number.model=3}
+    else if (input$RegModel=='Linear & Seassons'){
+      number.model=4}
+    else if (input$RegModel=='Cuadratic & Seassons'){
+      number.model=5}
+    else {
+      number.model=6}
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
@@ -298,9 +278,8 @@ server <- function(input, output) {
     m <- input$fore.period
     ano.inicio <- as.numeric(getYear(fechas[1]))
     periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 4
 
-    plot.model(
+    residuals.reg(
       datos,
       fechas,
       frequency,
@@ -310,11 +289,24 @@ server <- function(input, output) {
       number.model
     )
 
-  }
-  )
+    #Tabla de Salida de Estadisticos Residuales
 
-  #Modelo de Regresion - cuadseason
-  output$cuadseason <- renderPlot({
+  })
+
+  output$tab.res <- renderPrint({
+
+    if (input$RegModel=='Linear'){
+      number.model=1}
+    else if (input$RegModel=='Cuadratic'){
+      number.model=2}
+    else if (input$RegModel=='Cubic'){
+      number.model=3}
+    else if (input$RegModel=='Linear & Seassons'){
+      number.model=4}
+    else if (input$RegModel=='Cuadratic & Seassons'){
+      number.model=5}
+    else {
+      number.model=6}
 
     req(input$file)
     df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
@@ -324,9 +316,8 @@ server <- function(input, output) {
     m <- input$fore.period
     ano.inicio <- as.numeric(getYear(fechas[1]))
     periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 5
 
-    plot.model(
+    acc.model(
       datos,
       fechas,
       frequency,
@@ -336,430 +327,8 @@ server <- function(input, output) {
       number.model
     )
 
-  }
-  )
+  })
 
-  #Modelo de Regresion - cubseason
-  output$cubseason <- renderPlot({
-
-    req(input$file)
-    df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-    datos <- df[,ncol(df)]
-    fechas <- as.Date(df[,ncol(df)-1])
-    frequency <- input$frequency
-    m <- input$fore.period
-    ano.inicio <- as.numeric(getYear(fechas[1]))
-    periodo.inicio <- as.numeric(getMonth(fechas[1]))
-    number.model <- 6
-
-    plot.model(
-      datos,
-      fechas,
-      frequency,
-      m,
-      ano.inicio,
-      periodo.inicio,
-      number.model
-    )
-
-  }
-  )
-
- output$linear.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 1
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$cuad.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 2
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$cubic.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 3
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$linses.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 4
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$cuadses.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 5
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$cubses.reg <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 6
-
-   medidas.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acclinear <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 1
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acccuad <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 2
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acccub <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 3
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acclinsea <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 4
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acccuasea <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 5
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$acccubsea <- renderPrint({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 6
-
-   acc.model(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Reslinear <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 1
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Rescuadratic <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 2
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Rescubic <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 3
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Reslinearseason <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 4
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Rescuadseason <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 5
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
-
- output$Rescubseason <- renderPlot({
-   req(input$file)
-   df <- read.csv(input$file$datapath,header = input$header, sep=input$sep)
-   datos <- df[,ncol(df)]
-   fechas <- as.Date(df[,ncol(df)-1])
-   frequency <- input$frequency
-   m <- input$fore.period
-   ano.inicio <- as.numeric(getYear(fechas[1]))
-   periodo.inicio <- as.numeric(getMonth(fechas[1]))
-   number.model <- 6
-
-   residuals.reg(
-     datos,
-     fechas,
-     frequency,
-     m,
-     ano.inicio,
-     periodo.inicio,
-     number.model
-   )
- })
 }
 
 
