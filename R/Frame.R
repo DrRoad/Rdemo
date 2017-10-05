@@ -62,7 +62,16 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                         numericInput('frequency',"Frequency",12),
                         #numericInput('year','Initial Year',2005),
                         #numericInput('init','Initial Period',1),
-                        numericInput('fore.period','Forecast Period',12)
+                        numericInput('fore.period','Forecast Period',12),
+
+                        #Menu para Seleccion del Modelo de Regresion
+
+                        selectInput(inputId = 'RegModel',
+                                    label = 'Regression Model',
+                                    choices = c('Linear','Cuadratic','Cubic',
+                                                'Linear & Seassons',
+                                                'Cuadratic & Seassons',
+                                                'Cubic & Seassons'))
                       ),
                       mainPanel(
                         tags$head(
